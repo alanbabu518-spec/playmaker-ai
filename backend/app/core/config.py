@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     gemini_api_key: str
     embedding_model: str
     embedding_dim: int = 768
+    generation_model: str
     wiki_user_agent: str = "PlaymakerAI/0.1 (learning project)"
 
 
