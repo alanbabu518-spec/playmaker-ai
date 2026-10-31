@@ -13,7 +13,14 @@ class Settings(BaseSettings):
     embedding_model: str
     embedding_dim: int = 768
     generation_model: str
+    generation_fallback_models: str = ""
     wiki_user_agent: str = "PlaymakerAI/0.1 (learning project)"
+
+    @property
+    def generation_models(self) -> list[str]:
+        """Primary model first, then the fallbacks in order."""
+        names = [self.generation_model, *self.generation_fallback_models.split(",")]
+        return [n.strip() for n in names if n.strip()]
 
 
 settings = Settings()
