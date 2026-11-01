@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     generation_model: str
     generation_fallback_models: str = ""
     cors_origins: str = "http://localhost:5173,http://localhost:5174"
+    admin_api_key: str = ""
     wiki_user_agent: str = "PlaymakerAI/0.1 (learning project)"
 
     @property
