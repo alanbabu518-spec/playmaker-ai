@@ -1,15 +1,18 @@
 import logging
 import secrets
 import threading
+import time
 
 from fastapi import APIRouter, BackgroundTasks, Depends, Header, HTTPException
 
+from app.api.middleware import llm_budget, rate_limit_ask
 from app.api.schemas import AskRequest, AskResponse, IngestRequest, IngestResponse
 from app.core.config import settings
 from app.core.db import pool
 from app.generation.answer import answer_question
 from app.generation.llm_client import GenerationFailed, GenerationQuotaExceeded
 from app.ingestion.pipeline import ingest_titles
+from app.utils.cache import DEGRADED_TTL, FULL_TTL, answer_cache, cache_key
 
 log = logging.getLogger(__name__)
 router = APIRouter()
@@ -26,10 +29,25 @@ def health() -> dict:
     return {"status": "ok"}
 
 
-@router.post("/ask", response_model=AskResponse)
+@router.post("/ask", response_model=AskResponse, dependencies=[Depends(rate_limit_ask)])
 def ask(req: AskRequest) -> dict:
+    start = time.perf_counter()
+    key = cache_key(req.question, req.top_k)
+    hit = answer_cache.get(key)
+    if hit is not None:
+        elapsed = int((time.perf_counter() - start) * 1000)
+        log.info("cache_hit")
+        return {**hit, "cached": True, "latency_ms": elapsed}
+
+    # Only uncached answers cost quota, so only they count against the daily budget.
+    if not llm_budget.try_spend():
+        raise HTTPException(
+            status_code=503,
+            detail="The demo's daily answer budget is used up. Previously asked questions still work.",
+        )
+
     try:
-        return answer_question(req.question, top_k=req.top_k)
+        result = answer_question(req.question, top_k=req.top_k)
     except GenerationQuotaExceeded:
         raise HTTPException(
             status_code=503,
@@ -43,7 +61,21 @@ def ask(req: AskRequest) -> dict:
     except Exception:
         log.exception("Unhandled error while answering")
         raise HTTPException(status_code=500, detail="Something went wrong while answering.")
-    
+
+    full_hybrid = "vector" in result.get("retrieval_methods", [])
+    answer_cache.set(key, result, FULL_TTL if full_hybrid else DEGRADED_TTL)
+    log.info(
+        "answer_computed",
+        extra={
+            "model": result["model"],
+            "answered": result["answered"],
+            "retrieval": result.get("retrieval_methods", []),
+            "pipeline_ms": result["latency_ms"],
+        },
+    )
+    return {**result, "cached": False}
+
+
 _ingest_lock = threading.Lock()
 
 

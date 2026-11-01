@@ -5,3 +5,5 @@ pydantic-settings
 google-genai
 tenacity
 pytest
+fastapi
+uvicorn[standard]

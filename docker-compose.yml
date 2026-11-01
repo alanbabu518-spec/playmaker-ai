@@ -15,5 +15,18 @@ services:
       timeout: 3s
       retries: 10
 
+  backend:
+    build: ./backend
+    env_file: .env
+    environment:
+      # Inside the Compose network the database is "db" on its own port 5432,
+      # not localhost:5434 as seen from your PC.
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      LOG_JSON: "true"
+    ports: ["8000:8000"]
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   pgdata:
