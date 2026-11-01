@@ -1,10 +1,11 @@
 import logging
 import secrets
-import threading 
+import threading
 import time
 
 from fastapi import APIRouter, BackgroundTasks, Depends, Header, HTTPException
 
+from app.api.middleware import llm_budget, rate_limit_ask
 from app.api.schemas import AskRequest, AskResponse, IngestRequest, IngestResponse
 from app.core.config import settings
 from app.core.db import pool
@@ -28,7 +29,7 @@ def health() -> dict:
     return {"status": "ok"}
 
 
-@router.post("/ask", response_model=AskResponse)
+@router.post("/ask", response_model=AskResponse, dependencies=[Depends(rate_limit_ask)])
 def ask(req: AskRequest) -> dict:
     start = time.perf_counter()
     key = cache_key(req.question, req.top_k)
@@ -36,6 +37,13 @@ def ask(req: AskRequest) -> dict:
     if hit is not None:
         elapsed = int((time.perf_counter() - start) * 1000)
         return {**hit, "cached": True, "latency_ms": elapsed}
+
+    # Only uncached answers cost quota, so only they count against the daily budget.
+    if not llm_budget.try_spend():
+        raise HTTPException(
+            status_code=503,
+            detail="The demo's daily answer budget is used up. Previously asked questions still work.",
+        )
 
     try:
         result = answer_question(req.question, top_k=req.top_k)
@@ -56,7 +64,8 @@ def ask(req: AskRequest) -> dict:
     full_hybrid = "vector" in result.get("retrieval_methods", [])
     answer_cache.set(key, result, FULL_TTL if full_hybrid else DEGRADED_TTL)
     return {**result, "cached": False}
- 
+
+
 _ingest_lock = threading.Lock()
 
 

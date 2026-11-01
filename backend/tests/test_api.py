@@ -3,18 +3,12 @@ from contextlib import contextmanager
 import pytest
 from fastapi.testclient import TestClient
 
-from app.api import routes
+from app.api import middleware, routes
+from app.api.middleware import DailyBudget, SlidingWindowLimiter
 from app.core.config import settings
 from app.generation.llm_client import GenerationFailed, GenerationQuotaExceeded
 from app.main import app
-
 from app.utils.cache import answer_cache
-
-
-@pytest.fixture(autouse=True)
-def clear_cache():
-    answer_cache.clear()  # tests must not see each other's cached answers
-    yield
 
 # No "with": this skips the startup hook, so the tests never open a real database pool.
 client = TestClient(app)
@@ -29,6 +23,15 @@ FAKE_ANSWER = {
     "model": "fake-model",
     "latency_ms": 5,
 }
+
+
+@pytest.fixture(autouse=True)
+def clean_state():
+    # The cache, limiter and budget are module-level, so tests must not see each other's state.
+    answer_cache.clear()
+    middleware.ask_limiter.reset()
+    middleware.llm_budget.reset()
+    yield
 
 
 class FakeConn:
@@ -108,7 +111,8 @@ def test_unexpected_error_returns_500_without_leaking_details(monkeypatch):
     r = client.post("/ask", json={"question": "Who won the final?"})
     assert r.status_code == 500
     assert "secret" not in r.text
-    
+
+
 def test_repeated_question_is_served_from_cache(monkeypatch):
     calls = []
 
@@ -122,6 +126,24 @@ def test_repeated_question_is_served_from_cache(monkeypatch):
     assert first["cached"] is False
     assert second["cached"] is True
     assert len(calls) == 1
+
+
+def test_per_client_rate_limit_returns_429(monkeypatch):
+    monkeypatch.setattr(routes, "answer_question", fake_answer)
+    monkeypatch.setattr(middleware, "ask_limiter", SlidingWindowLimiter(2))
+    for i in range(2):
+        assert client.post("/ask", json={"question": f"question number {i}"}).status_code == 200
+    r = client.post("/ask", json={"question": "question number 3"})
+    assert r.status_code == 429
+    assert int(r.headers["retry-after"]) >= 1
+
+
+def test_daily_budget_blocks_new_answers_but_not_cached_ones(monkeypatch):
+    monkeypatch.setattr(routes, "answer_question", fake_answer)
+    monkeypatch.setattr(routes, "llm_budget", DailyBudget(1))
+    assert client.post("/ask", json={"question": "first question"}).status_code == 200
+    assert client.post("/ask", json={"question": "first question"}).json()["cached"] is True
+    assert client.post("/ask", json={"question": "second question"}).status_code == 503
 
 
 # --- /ingest ---

@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     generation_fallback_models: str = ""
     judge_model: str = ""
     cors_origins: str = "http://localhost:5173,http://localhost:5174"
+    rate_limit_per_minute: int = 10
+    daily_llm_budget: int = 15
+    trust_proxy: bool = False
     admin_api_key: str = ""
     wiki_user_agent: str = "PlaymakerAI/0.1 (learning project)"
 
