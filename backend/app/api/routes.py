@@ -1,6 +1,7 @@
 import logging
 import secrets
-import threading
+import threading 
+import time
 
 from fastapi import APIRouter, BackgroundTasks, Depends, Header, HTTPException
 
@@ -10,6 +11,7 @@ from app.core.db import pool
 from app.generation.answer import answer_question
 from app.generation.llm_client import GenerationFailed, GenerationQuotaExceeded
 from app.ingestion.pipeline import ingest_titles
+from app.utils.cache import DEGRADED_TTL, FULL_TTL, answer_cache, cache_key
 
 log = logging.getLogger(__name__)
 router = APIRouter()
@@ -28,8 +30,15 @@ def health() -> dict:
 
 @router.post("/ask", response_model=AskResponse)
 def ask(req: AskRequest) -> dict:
+    start = time.perf_counter()
+    key = cache_key(req.question, req.top_k)
+    hit = answer_cache.get(key)
+    if hit is not None:
+        elapsed = int((time.perf_counter() - start) * 1000)
+        return {**hit, "cached": True, "latency_ms": elapsed}
+
     try:
-        return answer_question(req.question, top_k=req.top_k)
+        result = answer_question(req.question, top_k=req.top_k)
     except GenerationQuotaExceeded:
         raise HTTPException(
             status_code=503,
@@ -43,7 +52,11 @@ def ask(req: AskRequest) -> dict:
     except Exception:
         log.exception("Unhandled error while answering")
         raise HTTPException(status_code=500, detail="Something went wrong while answering.")
-    
+
+    full_hybrid = "vector" in result.get("retrieval_methods", [])
+    answer_cache.set(key, result, FULL_TTL if full_hybrid else DEGRADED_TTL)
+    return {**result, "cached": False}
+ 
 _ingest_lock = threading.Lock()
 
 

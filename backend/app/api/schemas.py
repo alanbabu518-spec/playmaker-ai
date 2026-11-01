@@ -25,6 +25,7 @@ class AskResponse(BaseModel):
     sources: list[Source]
     model: str | None = None
     latency_ms: int
+    cached: bool = False
 
 PageTitle = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)]
 
