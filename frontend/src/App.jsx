@@ -1,9 +1,25 @@
+import AppScreen from './screens/AppScreen'
+import { useChat } from './hooks/useChat'
+import { goTo, useRoute } from './lib/router'
+
 export default function App() {
+  const route = useRoute()
+  const chat = useChat()
+
+  if (route === 'app') return <AppScreen chat={chat} />
+
+  // Temporary until step 6: the landing page.
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
-      <div className="mx-auto max-w-3xl px-4 py-10">
-        <h1 className="text-3xl font-bold">Playmaker AI</h1>
-        <p className="mt-2 text-slate-600">Football knowledge, retrieved and cited.</p>
+    <main className="grid min-h-dvh place-items-center bg-pitch p-6 text-white">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold">Landing page comes in step 6</h1>
+        <button
+          type="button"
+          onClick={() => goTo('app')}
+          className="mt-6 min-h-11 rounded-xl border border-gold-edge bg-gold px-6 text-lg font-semibold text-pitch"
+        >
+          Open Playmaker AI
+        </button>
       </div>
     </main>
   )

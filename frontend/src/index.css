@@ -18,6 +18,7 @@
 }
 
 html {
+  font-size: 87.5%; /* 14px at the browser default; every rem size scales from here */
   scroll-behavior: smooth;
 }
 
