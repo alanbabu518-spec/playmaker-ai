@@ -36,6 +36,7 @@ def ask(req: AskRequest) -> dict:
     hit = answer_cache.get(key)
     if hit is not None:
         elapsed = int((time.perf_counter() - start) * 1000)
+        log.info("cache_hit")
         return {**hit, "cached": True, "latency_ms": elapsed}
 
     # Only uncached answers cost quota, so only they count against the daily budget.
@@ -63,6 +64,15 @@ def ask(req: AskRequest) -> dict:
 
     full_hybrid = "vector" in result.get("retrieval_methods", [])
     answer_cache.set(key, result, FULL_TTL if full_hybrid else DEGRADED_TTL)
+    log.info(
+        "answer_computed",
+        extra={
+            "model": result["model"],
+            "answered": result["answered"],
+            "retrieval": result.get("retrieval_methods", []),
+            "pipeline_ms": result["latency_ms"],
+        },
+    )
     return {**result, "cached": False}
 
 
