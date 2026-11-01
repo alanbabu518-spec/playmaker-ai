@@ -40,18 +40,20 @@ def ingest_title(conn, title: str) -> str:
     return f"ingested {len(chunks)} chunks"
 
 
-def main() -> None:
+def ingest_titles(titles: list[str]) -> None:
     with store.connect() as conn:
-        for title in SEEDS:
+        for title in titles:
             try:
                 log.info("%s: %s", title, ingest_title(conn, title))
-            except Exception:
-                log.exception("%s: failed", title)
             except DailyQuotaExceeded as exc:
                 log.error("%s", exc)
                 break  # no point trying the remaining pages today
             except Exception:
                 log.exception("%s: failed", title)
+
+
+def main() -> None:
+    ingest_titles(SEEDS)
 
 
 if __name__ == "__main__":
