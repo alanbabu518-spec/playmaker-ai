@@ -1,0 +1,4 @@
+-r requirements.txt
+ragas
+langchain-google-genai
+pandas
