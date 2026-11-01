@@ -6,6 +6,8 @@ import PassLine from '../components/PassLine'
 import PitchLines from '../components/PitchLines'
 import Sidebar from '../components/Sidebar'
 import SourcesPanel from '../components/SourcesPanel'
+import StateView from '../components/StateView'
+import { useCountdown } from '../hooks/useCountdown'
 import { prepareAnswer } from '../lib/answer'
 
 const EXAMPLES = [
@@ -21,8 +23,11 @@ export default function AppScreen({ chat }) {
 
   const loading = current?.phase === 'loading'
   const answered = current?.phase === 'done' && current.result.answered
+  const limited = current?.phase === 'error' && current.error.kind === 'limit'
+  const waiting = useCountdown(current?.retryUntil) > 0
   const prepared = useMemo(() => (answered ? prepareAnswer(current.result) : null), [answered, current])
   const hasPanel = loading || answered
+  const earlier = history.find((e) => e.result.answered) ?? history[0]
 
   // "Edit question" focuses whichever input is visible (the sheet one on phones).
   useEffect(() => {
@@ -36,11 +41,15 @@ export default function AppScreen({ chat }) {
     value: draft,
     onChange: setDraft,
     onSubmit: chat.ask,
-    busy: loading,
+    busy: loading || waiting,
     topK,
     onTopK: setTopK,
   }
-  const followPlaceholder = loading || answered ? 'Ask a follow-up' : 'Ask another question'
+  const followPlaceholder = limited
+    ? 'Come back tomorrow to ask more'
+    : loading || answered
+      ? 'Ask a follow-up'
+      : 'Ask another question'
 
   let body
   if (!current) {
@@ -86,14 +95,15 @@ export default function AppScreen({ chat }) {
       />
     )
   } else {
-    // Temporary until step 5: the "I don't know" and error cards.
     body = (
-      <div>
-        <h1 className="text-3xl font-bold leading-tight tracking-tight">{current.question}</h1>
-        <div className="mt-6 rounded-2xl border border-line bg-white p-5 text-base">
-          {current.phase === 'error' ? current.error.message : current.result.answer}
-        </div>
-      </div>
+      <StateView
+        current={current}
+        canCheckMore={current.topK < 10}
+        onRetry={chat.retry}
+        onEdit={chat.editQuestion}
+        onCheckMore={chat.checkMore}
+        onReadEarlier={earlier ? () => chat.selectEntry(earlier.id) : undefined}
+      />
     )
   }
 
@@ -112,7 +122,13 @@ export default function AppScreen({ chat }) {
             {body}
             {current ? (
               <div className={`sticky bottom-0 mt-auto bg-chalk pb-6 pt-8 ${hasPanel ? 'hidden md:block' : ''}`}>
-                <Composer id="ask-main" placeholder={followPlaceholder} inputRef={mainInput} {...composerProps} />
+                <Composer
+                  id="ask-main"
+                  placeholder={followPlaceholder}
+                  inputRef={mainInput}
+                  {...composerProps}
+                  disabled={limited}
+                />
               </div>
             ) : null}
           </div>

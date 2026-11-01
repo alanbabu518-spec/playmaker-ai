@@ -38,13 +38,13 @@ export function useChat() {
       } catch (err) {
         if (err.name === 'AbortError') return true
         const error = err instanceof ApiError ? err : new ApiError('server', 'Something went wrong. Please try again.')
-        setDraft(question) // "Your question is still here"
+        if (error.kind !== 'limit') setDraft(question) // "Your question is still here"
         setCurrent({
           phase: 'error',
           question,
           topK: k,
           error,
-          retryUntil: error.kind === 'rate_limit' && error.retryAfter ? Date.now() + error.retryAfter * 1000 : null,
+          retryUntil: error.kind === 'rate_limit' ? Date.now() + (error.retryAfter ?? 10) * 1000 : null,
         })
       }
       return true
