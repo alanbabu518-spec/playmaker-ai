@@ -50,5 +50,6 @@ def answer_question(question: str, top_k: int = 5) -> dict:
         "sources": sources,
         "contexts": [c["content"] for c in chunks],  # full retrieved text, used by RAGAS
         "model": model,
+        "retrieval_methods": sorted({m for c in chunks for m in c.get("found_by", [])}),
         "latency_ms": int((time.perf_counter() - start) * 1000),
     }
