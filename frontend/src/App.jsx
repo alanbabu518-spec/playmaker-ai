@@ -1,26 +1,33 @@
-import AppScreen from './screens/AppScreen'
-import { useChat } from './hooks/useChat'
-import { goTo, useRoute } from './lib/router'
+import { useEffect } from "react";
+import { useChat } from "./hooks/useChat";
+import { goTo, useRoute } from "./lib/router";
+import AppScreen from "./screens/AppScreen";
+import LandingScreen from "./screens/LandingScreen";
 
 export default function App() {
-  const route = useRoute()
-  const chat = useChat()
+  const route = useRoute();
+  const chat = useChat();
 
-  if (route === 'app') return <AppScreen chat={chat} />
+  useEffect(() => {
+    window.scrollTo(0, 0); // every screen change starts at the top
+  }, [route]);
 
-  // Temporary until step 6: the landing page.
+  useEffect(() => {
+    document.title =
+      route === "app"
+        ? "Ask · Playmaker AI"
+        : "Playmaker AI: football answers you can check";
+  }, [route]);
+
+  if (route === "app") return <AppScreen chat={chat} />;
+
   return (
-    <main className="grid min-h-dvh place-items-center bg-pitch p-6 text-white">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold">Landing page comes in step 6</h1>
-        <button
-          type="button"
-          onClick={() => goTo('app')}
-          className="mt-6 min-h-11 rounded-xl border border-gold-edge bg-gold px-6 text-lg font-semibold text-pitch"
-        >
-          Open Playmaker AI
-        </button>
-      </div>
-    </main>
-  )
+    <LandingScreen
+      onOpen={() => goTo("app")}
+      onAsk={(question) => {
+        goTo("app");
+        chat.ask(question);
+      }}
+    />
+  );
 }
