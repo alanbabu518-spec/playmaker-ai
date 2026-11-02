@@ -34,3 +34,18 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/* Visible keyboard focus: a gold outer ring and a dark inner ring, readable on light and dark backgrounds. */
+:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-pitch);
+}
+
+/* iPhones zoom the page when an input's text is under 16px. Our base size is 14px, so force 16px on phones. */
+@media (max-width: 767px) {
+  input,
+  select {
+    font-size: 16px;
+  }
+}

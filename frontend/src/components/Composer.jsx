@@ -9,7 +9,7 @@ export default function Composer({
   const [touched, setTouched] = useState(false)
   const problem = validateQuestion(value)
   const showProblem = Boolean(problem) && (touched || problem.kind === 'long')
-  const hero = variant === 'hero'
+  const hero = variant === 'hero' || variant === 'landing'
   const blocked = disabled || busy
   const count = `${questionLength(value)} / ${MAX_LEN}`
 
@@ -75,7 +75,7 @@ export default function Composer({
         </div>
       ) : null}
 
-      {hero ? (
+    {variant === 'hero' ? (
         <div className="mt-4 flex items-center justify-between text-base text-moss">
           <label className="flex items-center gap-1">
             Sources to check:
