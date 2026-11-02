@@ -4,18 +4,10 @@ from app.chunking.chunker import build_chunks
 from app.embeddings.embedder import DailyQuotaExceeded, embed
 from app.ingestion.wikipedia import fetch_page
 from app.vectordb import store
+from app.ingestion.seeds import SEEDS
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger("ingest")
-
-SEEDS = [
-    "FIFA World Cup", "2022 FIFA World Cup", "2022 FIFA World Cup final",
-    "UEFA Champions League", "Premier League", "La Liga",
-    "Lionel Messi", "Cristiano Ronaldo", "Kylian Mbappé", "Pelé",
-    "Diego Maradona", "Real Madrid CF", "FC Barcelona", "Manchester United F.C.",
-    "Offside (association football)", "Tiki-taka", "Gegenpressing",
-]
-
 
 def ingest_title(conn, title: str) -> str:
     page = fetch_page(title)
