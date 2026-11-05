@@ -31,16 +31,31 @@
   --animate-shake: shake 360ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 
   @keyframes shake {
-    10%, 90% { transform: translateX(-1px); }
-    20%, 80% { transform: translateX(2px); }
-    30%, 50%, 70% { transform: translateX(-4px); }
-    40%, 60% { transform: translateX(4px); }
+    10%,
+    90% {
+      transform: translateX(-1px);
+    }
+    20%,
+    80% {
+      transform: translateX(2px);
+    }
+    30%,
+    50%,
+    70% {
+      transform: translateX(-4px);
+    }
+    40%,
+    60% {
+      transform: translateX(4px);
+    }
   }
 }
 
 html {
   font-size: 87.5%; /* 14px at the browser default; every rem size scales from here */
   scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent; /* no grey flash on tap: our buttons draw their own press state */
+  -webkit-text-size-adjust: 100%; /* no font inflation in landscape */
 }
 
 body {
@@ -63,11 +78,40 @@ body {
   box-shadow: 0 0 0 2px var(--color-pitch);
 }
 
-/* iPhones zoom the page when an input's text is under 16px. Our base size is 14px, so force 16px on phones. */
-@media (max-width: 767px) {
+/* The chat screen is an app shell with its own scrolling panels, so the page must not rubber-band or
+   pull to refresh. The landing page is a normal document and keeps both. */
+html.app-shell,
+html.app-shell body {
+  overscroll-behavior: none;
+}
+
+/* Skip the double-tap-zoom wait, so taps fire immediately. */
+a,
+button,
+[role="button"],
+summary,
+select,
+label {
+  touch-action: manipulation;
+}
+
+/* Controls must not select their label or show a callout on long-press. Content stays selectable. */
+button,
+[role="button"],
+summary,
+nav a,
+header a {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* iOS zooms into any field under 16px, and keeps the zoom after blur. Any touch screen needs this,
+   including an iPad in portrait, so the rule asks about touch and not about screen width. */
+@media (pointer: coarse) {
   input,
-  select,
-  textarea {
+  textarea,
+  select {
     font-size: 16px;
   }
 }

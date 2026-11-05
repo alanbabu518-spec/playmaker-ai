@@ -17,7 +17,7 @@ const EXAMPLES = [
 ];
 
 const gold =
-  "min-h-11 rounded-xl border border-gold-edge bg-gold px-5 text-base font-semibold text-pitch shadow-sm hover:brightness-95";
+  "min-h-[44px] rounded-xl border border-gold-edge bg-gold px-5 text-base font-semibold text-pitch shadow-sm transition duration-150 ease-out hover:brightness-95 active:scale-95";
 
 function scrollTo(id) {
   document
