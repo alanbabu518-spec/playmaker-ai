@@ -27,6 +27,15 @@
       transform: none;
     }
   }
+
+  --animate-shake: shake 360ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+
+  @keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+  }
 }
 
 html {
@@ -57,7 +66,14 @@ body {
 /* iPhones zoom the page when an input's text is under 16px. Our base size is 14px, so force 16px on phones. */
 @media (max-width: 767px) {
   input,
-  select {
+  select,
+  textarea {
     font-size: 16px;
   }
+}
+
+/* The question box shows focus on its frame, so the field inside does not draw a second ring. */
+.composer-field:focus-visible {
+  outline: none;
+  box-shadow: none;
 }

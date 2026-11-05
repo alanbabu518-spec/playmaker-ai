@@ -53,6 +53,17 @@ function Svg({ size = 20, className = '', children }) {
   )
 }
 
+export const SendIcon = (p) => <Svg {...p}><path d="M12 19V5M6 11l6-6 6 6" /></Svg>
+
+export function SpinnerIcon({ size = 20, className = '' }) {
+  return (
+    <svg className={`motion-safe:animate-spin ${className}`} width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity=".25" strokeWidth="3" />
+      <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 export const PanelLeftIcon = (p) => <Svg {...p}><rect x="3" y="4" width="18" height="16" rx="3" /><path d="M9 4v16" /></Svg>
 export const PlusIcon = (p) => <Svg {...p}><path d="M12 5v14M5 12h14" /></Svg>
 export const CloseIcon = (p) => <Svg {...p}><path d="M6 6l12 12M18 6L6 18" /></Svg>
