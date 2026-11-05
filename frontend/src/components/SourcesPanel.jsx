@@ -1,10 +1,28 @@
+import { useEffect, useState } from 'react'
 import { CloseIcon } from './Icons'
 import SourceCard from './SourceCard'
 import { iconButton } from './ui'
 
-export default function SourcesPanel({ question, used, checked, onClose }) {
+export default function SourcesPanel({ question, used, checked, focus, onClose }) {
+  const [flash, setFlash] = useState(null)
+
+  // Clicking a citation scrolls its card into view and highlights it for a moment.
+  useEffect(() => {
+    if (!focus?.n) return undefined
+    const show = setTimeout(() => {
+      document.getElementById(`source-${focus.n}`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+      setFlash(focus.n)
+    }, 150) // lets the sheet finish sliding in first
+    const hide = setTimeout(() => setFlash(null), 1800)
+    return () => {
+      clearTimeout(show)
+      clearTimeout(hide)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus?.tick])
+
   return (
-    <div className="flex h-full max-h-full w-full flex-col bg-sage">
+    <div className="flex h-full min-h-0 w-full flex-1 flex-col bg-sage">
       <header className="flex items-start justify-between gap-3 px-5 pb-2 pt-4">
         <div className="min-w-0 pt-1">
           <h2 className="text-lg font-semibold">Sources</h2>
@@ -21,7 +39,7 @@ export default function SourcesPanel({ question, used, checked, onClose }) {
             <h3 className="mb-3 text-base font-semibold">Used in this answer</h3>
             <div className="space-y-3">
               {used.map(({ n, source }) => (
-                <SourceCard key={source.id} n={n} source={source} />
+                <SourceCard key={source.id} n={n} source={source} flash={flash === n} />
               ))}
             </div>
           </>

@@ -41,7 +41,7 @@ export function Overlay({ open, onClose, side, label, children }) {
         role="dialog"
         aria-modal="true"
         aria-label={label}
-        className={`absolute ${place} overflow-hidden shadow-2xl transition-transform duration-[250ms] ease-out motion-reduce:transition-none ${
+        className={`absolute ${place} flex flex-col overflow-hidden shadow-2xl transition-transform duration-[250ms] ease-out motion-reduce:transition-none ${
           open ? 'translate-x-0 translate-y-0' : hidden
         }`}
       >

@@ -3,17 +3,16 @@ import Composer from '../components/Composer'
 import HistoryPanel from '../components/HistoryPanel'
 import { CloseIcon, YellowCardIcon } from '../components/Icons'
 import { InlineSlot, Overlay } from '../components/Panels'
-import PassLine from '../components/PassLine'
 import PitchLines from '../components/PitchLines'
 import SkipLink from '../components/SkipLink'
 import SourcesPanel from '../components/SourcesPanel'
+import Thread from '../components/Thread'
 import TopBar from '../components/TopBar'
 import { iconButton } from '../components/ui'
 import { useCountdown } from '../hooks/useCountdown'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { prepareAnswer } from '../lib/answer'
 import { usePrefs } from '../lib/prefs'
-import { navigate } from '../lib/router'
 
 const EXAMPLES = [
   { label: 'How does offside work?', question: 'How does offside work?' },
@@ -26,9 +25,8 @@ export default function AppScreen({ chat, route }) {
   const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
   const [prefs, setPref] = usePrefs()
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [panel, setPanel] = useState({ open: false, turnId: null })
+  const [panel, setPanel] = useState({ open: false, turnId: null, focusN: null, tick: 0 })
   const mainInput = useRef(null)
-  const scrollRef = useRef(null)
 
   const turns = chat.activeChat?.turns ?? []
   const live = chat.live && chat.live.chatId === route.id ? chat.live : null
@@ -40,7 +38,7 @@ export default function AppScreen({ chat, route }) {
   // The sources panel follows the newest answer. On a phone it stays closed until you ask for it.
   const lastId = turns.filter((t) => t.result.answered).at(-1)?.id ?? null
   useEffect(() => {
-    setPanel({ open: isDesktop && prefs.sourcesAuto && lastId !== null, turnId: lastId })
+    setPanel((p) => ({ ...p, open: isDesktop && prefs.sourcesAuto && lastId !== null, turnId: lastId, focusN: null }))
     // Only a new answer, another chat or a resize resets the panel, not a change of preference.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastId, isDesktop])
@@ -49,25 +47,21 @@ export default function AppScreen({ chat, route }) {
   const prepared = useMemo(() => (panelTurn ? prepareAnswer(panelTurn.result) : null), [panelTurn])
   const panelOpen = panel.open && prepared !== null
 
-  function openSources(turnId) {
-    setPanel({ open: true, turnId })
+  function openSources(turnId, n = null) {
+    setPanel((p) => ({ open: true, turnId, focusN: n, tick: p.tick + 1 }))
     if (isDesktop) setPref('sourcesAuto', true)
   }
   function closeSources() {
     setPanel((p) => ({ ...p, open: false }))
     if (isDesktop) setPref('sourcesAuto', false)
   }
+  const openHistory = () => (isDesktop ? setPref('historyOpen', true) : setDrawerOpen(true))
 
   useEffect(() => {
     if (!chat.focusTick) return
     mainInput.current?.focus()
     mainInput.current?.select()
   }, [chat.focusTick])
-
-  useEffect(() => {
-    const el = scrollRef.current
-    if (el) el.scrollTo({ top: el.scrollHeight, behavior: reduceMotion ? 'auto' : 'smooth' })
-  }, [turns.length, live?.phase, reduceMotion])
 
   const composerProps = {
     value: chat.draft,
@@ -96,6 +90,16 @@ export default function AppScreen({ chat, route }) {
     />
   )
 
+  const sourcesContent = prepared ? (
+    <SourcesPanel
+      question={panelTurn.question}
+      used={prepared.used}
+      checked={prepared.checked}
+      focus={{ n: panel.focusN, tick: panel.tick }}
+      onClose={closeSources}
+    />
+  ) : null
+
   return (
     <div className="flex h-dvh overflow-hidden bg-chalk text-pitch">
       <SkipLink />
@@ -114,7 +118,7 @@ export default function AppScreen({ chat, route }) {
         <TopBar
           isDesktop={isDesktop}
           historyOpen={prefs.historyOpen}
-          onOpenHistory={() => (isDesktop ? setPref('historyOpen', true) : setDrawerOpen(true))}
+          onOpenHistory={openHistory}
           onNewChat={chat.newChat}
           sources={
             prepared
@@ -128,7 +132,7 @@ export default function AppScreen({ chat, route }) {
         />
 
         <main id="content" tabIndex={-1} className="relative flex min-h-0 flex-1 flex-col outline-none">
-          <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 md:px-10">
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 md:px-10">
             <div className={`mx-auto flex w-full max-w-[720px] flex-col py-8 ${hasContent ? '' : 'min-h-full justify-center'}`}>
               {chat.notice ? (
                 <div role="status" className="mb-6 flex items-center gap-3 rounded-xl border border-gold-edge bg-notice py-2 pl-4 pr-2 text-base font-medium text-notice-ink">
@@ -162,34 +166,17 @@ export default function AppScreen({ chat, route }) {
                   </div>
                 </div>
               ) : (
-                // Placeholder thread: step 3 replaces this with the real answer cards.
-                <div className="space-y-8">
-                  {turns.map((t) => (
-                    <section key={t.id}>
-                      <h2 className="text-2xl font-bold">{t.question}</h2>
-                      <p className="mt-3 font-serif text-lg leading-relaxed">{t.result.answer}</p>
-                      {t.result.answered ? (
-                        <button type="button" onClick={() => openSources(t.id)} className="mt-3 text-base font-semibold underline">
-                          Sources ({t.result.sources.length})
-                        </button>
-                      ) : null}
-                    </section>
-                  ))}
-                  {loading ? (
-                    <section>
-                      <h2 className="text-2xl font-bold">{live.question}</h2>
-                      <PassLine className="mt-6 w-[300px] max-w-full" />
-                      <p role="status" className="mt-3 text-lg font-medium text-pitch-soft">Searching football sources…</p>
-                    </section>
-                  ) : null}
-                  {live?.phase === 'error' ? (
-                    <section>
-                      <h2 className="text-2xl font-bold">{live.question}</h2>
-                      <p className="mt-3 text-lg">{live.error.message}</p>
-                      <button type="button" onClick={chat.retry} className="mt-3 text-base font-semibold underline">Try again</button>
-                    </section>
-                  ) : null}
-                </div>
+                <Thread
+                  turns={turns}
+                  live={live}
+                  reduceMotion={reduceMotion}
+                  onCite={openSources}
+                  onOpenSources={openSources}
+                  onCheckMore={chat.checkMore}
+                  onEdit={chat.editQuestion}
+                  onRetry={chat.retry}
+                  onReadEarlier={openHistory}
+                />
               )}
             </div>
           </div>
@@ -208,22 +195,15 @@ export default function AppScreen({ chat, route }) {
         </main>
       </div>
 
-      {(() => {
-        const content = prepared ? (
-          <SourcesPanel question={panelTurn.question} used={prepared.used} checked={prepared.checked} onClose={closeSources} />
-        ) : null
-        return isDesktop ? (
-          <InlineSlot open={panelOpen} width={340}>
-            {content}
-          </InlineSlot>
-        ) : (
-          <Overlay open={panelOpen} onClose={closeSources} side="bottom" label="Sources">
-            {content}
-          </Overlay>
-        )
-      })()}
+      {isDesktop ? (
+        <InlineSlot open={panelOpen} width={340}>
+          {sourcesContent}
+        </InlineSlot>
+      ) : (
+        <Overlay open={panelOpen} onClose={closeSources} side="bottom" label="Sources">
+          {sourcesContent}
+        </Overlay>
+      )}
     </div>
   )
 }
-
-export { navigate }

@@ -1,10 +1,12 @@
 import { cleanSnippet } from '../lib/answer'
 
-export default function SourceCard({ n, source }) {
+export default function SourceCard({ n, source, flash = false }) {
   return (
     <article
       id={n ? `source-${n}` : undefined}
-      className="scroll-mt-4 rounded-2xl border border-line bg-white p-4 shadow-sm"
+      className={`scroll-mt-4 rounded-2xl border bg-white p-4 shadow-sm transition-shadow duration-300 ${
+        flash ? 'border-gold-edge ring-2 ring-gold' : 'border-line'
+      }`}
     >
       <div className="flex items-start gap-3">
         {n ? (

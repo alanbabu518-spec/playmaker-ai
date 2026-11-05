@@ -1,39 +1,23 @@
-const CITATION = /\[(\d+)\]/g
+const CITATION = /[ \t]*\[(\d+)\]/g
 
-// Turns the backend answer into text pieces plus numbered citations.
-// Citations are renumbered 1, 2, 3... in the order they appear, and each number points at exactly
-// one source card. A marker that matches no source is dropped, so a made-up [9] never shows.
+// Rewrites the model's [n] markers as 1, 2, 3... in order of first appearance. Each number then points at
+// exactly one source card, and a marker that matches no source is dropped, so a made-up [9] never shows.
 export function prepareAnswer(result) {
   const byId = new Map(result.sources.map((s) => [s.id, s]))
   const order = []
-  const parts = []
-  let last = 0
-
-  for (const match of result.answer.matchAll(CITATION)) {
-    const before = result.answer.slice(last, match.index)
-    last = match.index + match[0].length
-    const source = byId.get(Number(match[1]))
-    if (!source) {
-      parts.push({ type: 'text', text: before })
-      continue
-    }
-    let pos = order.indexOf(source)
-    if (pos === -1) {
-      order.push(source)
-      pos = order.length - 1
-    }
-    parts.push({ type: 'text', text: before.replace(/\s+$/, '') }) // the badge sits right against the word
-    parts.push({ type: 'cite', n: pos + 1 })
-  }
-  parts.push({ type: 'text', text: result.answer.slice(last) })
-
+  const text = result.answer.replace(CITATION, (_, raw) => {
+    const source = byId.get(Number(raw))
+    if (!source) return ''
+    if (!order.includes(source)) order.push(source)
+    return `[${order.indexOf(source) + 1}]`
+  })
   const used = order.map((source, i) => ({ n: i + 1, source }))
   const checked = result.sources.filter((s) => !order.includes(s))
-  return { parts, used, checked }
+  return { text, used, checked }
 }
 
-export function toPlainText(parts) {
-  return parts.map((p) => (p.type === 'cite' ? `[${p.n}]` : p.text)).join('')
+export function toPlainText(text) {
+  return text.replace(/\*\*(.+?)\*\*/g, '$1')
 }
 
 // The backend snippet starts with a "Title - Section" line, and it is cut at 300 characters.
