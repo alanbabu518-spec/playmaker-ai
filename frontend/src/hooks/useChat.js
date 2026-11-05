@@ -51,7 +51,7 @@ export function useChat(route) {
       setNotice('')
       setDraft('')
       setLive({ chatId, question, topK: k, phase: 'loading', replaceTurnId })
-      if (!routeChatId) navigate(chatPath(chatId), { replace: true })
+      if (!routeChatId) navigate(chatPath(chatId), { replace: route.name === 'new' })
 
       try {
         const { requestId, ...result } = await askQuestion(question, { signal: controller.signal, topK: k })
