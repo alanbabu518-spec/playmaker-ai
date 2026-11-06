@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     generation_model: str
     generation_fallback_models: str = ""
     judge_model: str = ""
-    cors_origins: str = "http://localhost:5173,http://localhost:5174"
+    cors_origins: str = "http://localhost:5173,http://localhost:5174,https://playmaker-ai-two.vercel.app"
     rate_limit_per_minute: int = 10
     daily_llm_budget: int = 15
     trust_proxy: bool = False
