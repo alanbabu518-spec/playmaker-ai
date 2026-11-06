@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: playmaker-api
+    runtime: docker
+    plan: free
+    region: singapore # use the same region as your Neon project
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass # deploy only after the GitHub checks pass
+    envVars:
+      - key: PORT
+        value: "8000"
+      - key: DATABASE_URL
+        sync: false # you type this in the Render dashboard
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false # the Vercel address, added after the frontend is deployed
+      - key: EMBEDDING_MODEL
+        value: gemini-embedding-2
+      - key: EMBEDDING_DIM
+        value: "768"
+      - key: GENERATION_MODEL
+        value: gemini-3.6-flash
+      - key: GENERATION_FALLBACK_MODELS
+        value: gemini-3.5-flash,gemini-3.8-flash
+      - key: DAILY_LLM_BUDGET
+        value: "15"
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "10"
+      - key: TRUST_PROXY
+        value: "true"
+      - key: LOG_JSON
+        value: "true"
