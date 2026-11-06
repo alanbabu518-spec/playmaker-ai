@@ -20,3 +20,10 @@ def test_every_league_season_from_2007_is_listed():
 def test_isl_starts_in_2014():
     assert "2014 Indian Super League season" in SEEDS
     assert "2007\u201308 Indian Super League season" not in SEEDS
+    
+def test_recent_ballon_dor_years_load_before_league_seasons():
+    assert SEEDS.index("2024 Ballon d'Or") < SEEDS.index(f"{season(2024)} Premier League")
+
+
+def test_old_ballon_dor_years_load_last():
+    assert SEEDS.index("1956 Ballon d'Or") > SEEDS.index(f"{season(2007)} Premier League")

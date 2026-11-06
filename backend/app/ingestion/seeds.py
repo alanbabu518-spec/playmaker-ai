@@ -51,7 +51,9 @@ SEEDS = list(
     dict.fromkeys(  # removes duplicates but keeps the order
         [
             *WORLD_CUPS, *COMPETITIONS, *BALLON_DOR, *CONCEPTS, *PEOPLE_AND_CLUBS,
-            *league_seasons(), *isl_seasons(), *ballon_dor_years(),
+            *ballon_dor_years(first=2007),  # recent winners first: the most asked questions
+            *league_seasons(), *isl_seasons(),
+            *ballon_dor_years(),  # the older years last (titles already listed are skipped)
         ]
     )
 )
