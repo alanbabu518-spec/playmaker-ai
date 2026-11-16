@@ -1,0 +1,53 @@
+{
+  "k": 5,
+  "questions": 50,
+  "scored": 48,
+  "not_loaded": 2,
+  "keyword_only": 0,
+  "hit_at_1": 0.854,
+  "hit_at_3": 0.958,
+  "hit_at_k": 1.0,
+  "mrr": 0.903,
+  "by_kind": {
+    "ballon_dor": {
+      "scored": 8,
+      "hit_at_1": 0.75,
+      "hit_at_k": 1.0
+    },
+    "concept": {
+      "scored": 2,
+      "hit_at_1": 1.0,
+      "hit_at_k": 1.0
+    },
+    "entity": {
+      "scored": 6,
+      "hit_at_1": 0.833,
+      "hit_at_k": 1.0
+    },
+    "isl": {
+      "scored": 2,
+      "hit_at_1": 1.0,
+      "hit_at_k": 1.0
+    },
+    "near_twin": {
+      "scored": 3,
+      "hit_at_1": 1.0,
+      "hit_at_k": 1.0
+    },
+    "season": {
+      "scored": 10,
+      "hit_at_1": 0.9,
+      "hit_at_k": 1.0
+    },
+    "table": {
+      "scored": 9,
+      "hit_at_1": 0.889,
+      "hit_at_k": 1.0
+    },
+    "world_cup": {
+      "scored": 8,
+      "hit_at_1": 0.75,
+      "hit_at_k": 1.0
+    }
+  }
+}

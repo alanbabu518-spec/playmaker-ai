@@ -17,3 +17,12 @@ backend/logs/
 
 # os
 .DS_Store
+
+backend/eval/results/run.json
+
+# Database files and backups
+*.dump
+backend/football-data.sql
+
+# Evaluation generated results
+backend/eval/results/

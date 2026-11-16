@@ -8,6 +8,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import router
+from app.core import metrics
 from app.core.config import settings
 from app.core.db import pool
 from app.core.logging import request_id_var, setup_logging
@@ -21,6 +22,7 @@ SAFE_REQUEST_ID = re.compile(r"^[A-Za-z0-9._-]{8,64}$")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     pool.open(wait=True, timeout=15)  # fail at startup if the database is unreachable
+    metrics.ensure_table()
     yield
     pool.close()
 
