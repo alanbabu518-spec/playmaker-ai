@@ -19,11 +19,21 @@ def _cited_numbers(text: str, max_n: int) -> set[int]:
 def answer_question(question: str, top_k: int = 5) -> dict:
     start = time.perf_counter()
     chunks = hybrid_search(question, limit=top_k)
+    retrieval_ms = int((time.perf_counter() - start) * 1000)
 
     text, model = NO_ANSWER, None
+    generation_ms = 0
+    usage = {"prompt_tokens": None, "output_tokens": None, "total_tokens": None}
     if chunks:  # no evidence means no LLM call, so nothing can be made up
+        gen_start = time.perf_counter()
         gen = generate(SYSTEM_PROMPT, build_user_prompt(question, chunks))
+        generation_ms = int((time.perf_counter() - gen_start) * 1000)
         text, model = gen.text or NO_ANSWER, gen.model
+        usage = {
+            "prompt_tokens": gen.prompt_tokens,
+            "output_tokens": gen.output_tokens,
+            "total_tokens": gen.total_tokens,
+        }
 
     answered = bool(chunks) and not text.startswith(NO_ANSWER)
     cited = _cited_numbers(text, len(chunks)) if answered else set()
@@ -52,4 +62,7 @@ def answer_question(question: str, top_k: int = 5) -> dict:
         "model": model,
         "retrieval_methods": sorted({m for c in chunks for m in c.get("found_by", [])}),
         "latency_ms": int((time.perf_counter() - start) * 1000),
+        "retrieval_ms": retrieval_ms,  # monitoring only: /ask does not return these three
+        "generation_ms": generation_ms,
+        "usage": usage,
     }

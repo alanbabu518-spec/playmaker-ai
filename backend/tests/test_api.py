@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.api import middleware, routes
+from app.core import metrics
 from app.api.middleware import DailyBudget, SlidingWindowLimiter
 from app.core.config import settings
 from app.generation.llm_client import GenerationFailed, GenerationQuotaExceeded
@@ -22,16 +23,24 @@ FAKE_ANSWER = {
     "contexts": ["full retrieved text that must stay private"],
     "model": "fake-model",
     "latency_ms": 5,
+    "retrieval_ms": 2,
+    "generation_ms": 3,
+    "usage": {"prompt_tokens": 100, "output_tokens": 20, "total_tokens": 120},
 }
 
 
 @pytest.fixture(autouse=True)
-def clean_state():
+def clean_state(monkeypatch):
     # The cache, limiter and budget are module-level, so tests must not see each other's state.
     answer_cache.clear()
     middleware.ask_limiter.reset()
     middleware.llm_budget.reset()
+    recorded.clear()
+    monkeypatch.setattr(metrics, "record", lambda **fields: recorded.append(fields))  # no database in tests
     yield
+
+
+recorded: list[dict] = []
 
 
 class FakeConn:
@@ -144,6 +153,60 @@ def test_daily_budget_blocks_new_answers_but_not_cached_ones(monkeypatch):
     assert client.post("/ask", json={"question": "first question"}).status_code == 200
     assert client.post("/ask", json={"question": "first question"}).json()["cached"] is True
     assert client.post("/ask", json={"question": "second question"}).status_code == 503
+
+
+# --- monitoring ---
+
+def test_computed_answer_records_tokens_and_timings(monkeypatch):
+    monkeypatch.setattr(routes, "answer_question", fake_answer)
+    client.post("/ask", json={"question": "Who won the final?"})
+    row = recorded[-1]
+    assert row["cached"] is False and row["error"] is None and row["answered"] is True
+    assert (row["prompt_tokens"], row["output_tokens"], row["total_tokens"]) == (100, 20, 120)
+    assert (row["retrieval_ms"], row["generation_ms"]) == (2, 3)
+
+
+def test_cache_hit_is_recorded_without_tokens(monkeypatch):
+    monkeypatch.setattr(routes, "answer_question", fake_answer)
+    client.post("/ask", json={"question": "Who won the final?"})
+    client.post("/ask", json={"question": "Who won the final?"})
+    row = recorded[-1]
+    assert row["cached"] is True and row["total_tokens"] is None  # a cache hit must not count tokens twice
+
+
+@pytest.mark.parametrize(
+    "exc,label,status",
+    [
+        (GenerationQuotaExceeded("x"), "quota_exceeded", 503),
+        (GenerationFailed("x"), "model_unavailable", 503),
+        (RuntimeError("x"), "internal_error", 500),
+    ],
+)
+def test_failures_are_recorded_with_a_label(monkeypatch, exc, label, status):
+    monkeypatch.setattr(routes, "answer_question", raiser(exc))
+    client.post("/ask", json={"question": "Who won the final?"})
+    assert (recorded[-1]["error"], recorded[-1]["status"]) == (label, status)
+
+
+def test_budget_exhaustion_is_recorded(monkeypatch):
+    monkeypatch.setattr(routes, "llm_budget", DailyBudget(0))
+    client.post("/ask", json={"question": "Who won the final?"})
+    assert recorded[-1]["error"] == "budget_exhausted"
+
+
+def test_stats_returns_the_aggregates(monkeypatch):
+    monkeypatch.setattr(metrics, "fetch_stats", lambda hours: {"window_hours": hours, "requests": 3})
+    assert client.get("/stats?hours=6").json() == {"window_hours": 6, "requests": 3}
+    assert client.get("/stats?hours=0").status_code == 422
+
+
+def test_stats_failure_returns_503_without_details(monkeypatch):
+    def boom(hours):
+        raise RuntimeError("secret sql detail")
+
+    monkeypatch.setattr(metrics, "fetch_stats", boom)
+    r = client.get("/stats")
+    assert r.status_code == 503 and "secret" not in r.text
 
 
 # --- /ingest ---

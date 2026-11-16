@@ -19,6 +19,9 @@ _client = genai.Client(
 class Generation(NamedTuple):
     text: str
     model: str  # which model actually answered
+    prompt_tokens: int | None = None
+    output_tokens: int | None = None  # answer plus thinking tokens, which are both billed as output
+    total_tokens: int | None = None
 
 
 class GenerationFailed(RuntimeError):
@@ -53,13 +56,23 @@ def _retry_same_model(exc: BaseException) -> bool:
     return isinstance(exc, errors.ClientError) and exc.code == 429
 
 
+def _tokens(res) -> tuple[int | None, int | None, int | None]:
+    """(prompt, output, total) token counts from a Gemini response; None when the API gave none."""
+    usage = getattr(res, "usage_metadata", None)
+    if usage is None:
+        return None, None, None
+    parts = [usage.candidates_token_count, usage.thoughts_token_count]
+    output = sum(p or 0 for p in parts) if any(p is not None for p in parts) else None
+    return usage.prompt_token_count, output, usage.total_token_count
+
+
 @retry(
     retry=retry_if_exception(_retry_same_model),
     stop=stop_after_attempt(2),
     wait=wait_exponential(min=2, max=10),
     reraise=True,
 )
-def _call(model: str, system: str, prompt: str) -> str:
+def _call(model: str, system: str, prompt: str) -> tuple[str, tuple]:
     res = _client.models.generate_content(
         model=model,
         contents=prompt,
@@ -68,14 +81,15 @@ def _call(model: str, system: str, prompt: str) -> str:
             thinking_config=types.ThinkingConfig(thinking_level="low"),
         ),
     )
-    return (res.text or "").strip()
+    return (res.text or "").strip(), _tokens(res)
 
 
 def generate(system: str, prompt: str) -> Generation:
     failures: list[BaseException] = []
     for model in settings.generation_models:
         try:
-            return Generation(_call(model, system, prompt), model)
+            text, (prompt_tokens, output_tokens, total_tokens) = _call(model, system, prompt)
+            return Generation(text, model, prompt_tokens, output_tokens, total_tokens)
         except (errors.APIError, httpx.TimeoutException) as exc:
             if _is_fatal(exc):
                 raise

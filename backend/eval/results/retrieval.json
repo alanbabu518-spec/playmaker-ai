@@ -1,0 +1,1036 @@
+[
+  {
+    "id": "r01",
+    "kind": "world_cup",
+    "question": "Who played in the 2026 World Cup final?",
+    "pages": [
+      "2026 FIFA World Cup final",
+      "2026 FIFA World Cup"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2026 FIFA World Cup final",
+      "2026 FIFA World Cup final",
+      "2026 FIFA World Cup final",
+      "2026 FIFA World Cup final",
+      "2026 FIFA World Cup knockout stage"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r02",
+    "kind": "world_cup",
+    "question": "Which countries hosted the 2026 World Cup?",
+    "pages": [
+      "2026 FIFA World Cup"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2026 FIFA World Cup",
+      "2026 FIFA World Cup",
+      "2026 FIFA World Cup knockout stage",
+      "2026 FIFA World Cup",
+      "2026 FIFA World Cup"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r03",
+    "kind": "world_cup",
+    "question": "How many teams played in the 2026 World Cup?",
+    "pages": [
+      "2026 FIFA World Cup"
+    ],
+    "status": "scored",
+    "rank": 4,
+    "top_titles": [
+      "2024–25 Serie A",
+      "2026 FIFA World Cup final",
+      "2024–25 Serie A",
+      "2026 FIFA World Cup",
+      "2023–24 Serie A"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r04",
+    "kind": "world_cup",
+    "question": "Who won the 2022 World Cup final?",
+    "pages": [
+      "2022 FIFA World Cup final",
+      "2022 FIFA World Cup"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2022 FIFA World Cup final",
+      "2022 FIFA World Cup final",
+      "2022 FIFA World Cup",
+      "2022 FIFA World Cup",
+      "2026 FIFA World Cup final"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r05",
+    "kind": "world_cup",
+    "question": "Who won the Golden Boot at the 2022 World Cup?",
+    "pages": [
+      "2022 FIFA World Cup"
+    ],
+    "status": "scored",
+    "rank": 3,
+    "top_titles": [
+      "2022 FIFA World Cup final",
+      "Kylian Mbappé",
+      "2022 FIFA World Cup",
+      "2022 FIFA World Cup final",
+      "2022 FIFA World Cup"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r06",
+    "kind": "world_cup",
+    "question": "Who scored the winning goal in the 2014 World Cup final?",
+    "pages": [
+      "2014 FIFA World Cup final",
+      "2014 FIFA World Cup"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2014 FIFA World Cup",
+      "2014 FIFA World Cup final",
+      "2014 FIFA World Cup final",
+      "2014 FIFA World Cup final",
+      "FIFA World Cup"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r07",
+    "kind": "world_cup",
+    "question": "In which stadium was the 2014 World Cup final played?",
+    "pages": [
+      "2014 FIFA World Cup final",
+      "2014 FIFA World Cup"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2014 FIFA World Cup final",
+      "2026 FIFA World Cup final",
+      "2014 FIFA World Cup final",
+      "FIFA World Cup",
+      "2014 FIFA World Cup"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r08",
+    "kind": "world_cup",
+    "question": "Which country has won the most World Cups?",
+    "pages": [
+      "FIFA World Cup"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "FIFA World Cup",
+      "Kylian Mbappé",
+      "FIFA World Cup",
+      "FIFA World Cup",
+      "2026 FIFA World Cup final"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r09",
+    "kind": "season",
+    "question": "Who won the 2024–25 Premier League?",
+    "pages": [
+      "2024–25 Premier League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2024–25 Premier League",
+      "Premier League",
+      "2024–25 Premier League",
+      "Bundesliga",
+      "2024–25 Premier League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r10",
+    "kind": "season",
+    "question": "Who won the 2023–24 La Liga?",
+    "pages": [
+      "2023–24 La Liga"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2023–24 La Liga",
+      "La Liga",
+      "2023–24 La Liga",
+      "Real Madrid CF",
+      "2009–10 La Liga"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r11",
+    "kind": "season",
+    "question": "Who won the 2022–23 Bundesliga?",
+    "pages": [
+      "2022–23 Bundesliga"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2022–23 Bundesliga",
+      "Bundesliga",
+      "2022–23 Bundesliga",
+      "2022–23 Bundesliga",
+      "2022–23 Bundesliga"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r12",
+    "kind": "season",
+    "question": "Who won the 2021–22 Serie A?",
+    "pages": [
+      "2021–22 Serie A"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2021–22 Serie A",
+      "Serie A",
+      "2021–22 Serie A",
+      "2022–23 Serie A",
+      "2020–21 Serie A"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r13",
+    "kind": "season",
+    "question": "Who won the 2023–24 UEFA Champions League?",
+    "pages": [
+      "2023–24 UEFA Champions League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2023–24 UEFA Champions League",
+      "2023–24 UEFA Champions League",
+      "Manchester United F.C.",
+      "Real Madrid CF",
+      "Serie A"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r14",
+    "kind": "season",
+    "question": "Who played in the 2024–25 UEFA Champions League final?",
+    "pages": [
+      "2024–25 UEFA Champions League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2024–25 UEFA Champions League",
+      "2024–25 UEFA Champions League",
+      "2024–25 UEFA Champions League",
+      "UEFA Champions League",
+      "2024–25 UEFA Champions League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r15",
+    "kind": "season",
+    "question": "Which teams were relegated from the 2022–23 Premier League?",
+    "pages": [
+      "2022–23 Premier League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2022–23 Premier League",
+      "2022–23 Premier League",
+      "2022–23 Premier League",
+      "2022–23 Premier League",
+      "2022–23 Premier League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r16",
+    "kind": "season",
+    "question": "Which teams were promoted to the 2023–24 Bundesliga?",
+    "pages": [
+      "2023–24 Bundesliga"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2023–24 Bundesliga",
+      "2024–25 Bundesliga",
+      "2023–24 Bundesliga",
+      "2023–24 Serie A",
+      "2024–25 Serie A"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r17",
+    "kind": "season",
+    "question": "Which teams qualified for the Champions League from the 2024–25 Serie A?",
+    "pages": [
+      "2024–25 Serie A"
+    ],
+    "status": "scored",
+    "rank": 4,
+    "top_titles": [
+      "2024–25 UEFA Champions League",
+      "Serie A",
+      "2025–26 UEFA Champions League",
+      "2024–25 Serie A",
+      "2021–22 UEFA Champions League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r18",
+    "kind": "season",
+    "question": "Which managers were sacked during the 2022–23 Premier League?",
+    "pages": [
+      "2022–23 Premier League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2022–23 Premier League",
+      "2022–23 Premier League",
+      "2022–23 Premier League",
+      "2022–23 Premier League",
+      "2022–23 Premier League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r19",
+    "kind": "table",
+    "question": "How many points did the 2022–23 Premier League champions finish with?",
+    "pages": [
+      "2022–23 Premier League"
+    ],
+    "status": "scored",
+    "rank": 2,
+    "top_titles": [
+      "2025–26 Premier League",
+      "2022–23 Premier League",
+      "2024–25 Premier League",
+      "2022–23 Premier League",
+      "2023–24 Premier League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r20",
+    "kind": "table",
+    "question": "Who finished third in the 2025–26 La Liga?",
+    "pages": [
+      "2025–26 La Liga"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2025–26 La Liga",
+      "2009–10 La Liga",
+      "2025–26 La Liga",
+      "2025–26 UEFA Champions League",
+      "2025–26 Bundesliga"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r21",
+    "kind": "table",
+    "question": "Who finished second in the 2023–24 Serie A?",
+    "pages": [
+      "2023–24 Serie A"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2023–24 Serie A",
+      "2023–24 Serie A",
+      "2023–24 UEFA Champions League",
+      "2024–25 Serie A",
+      "2024–25 Serie A"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r22",
+    "kind": "table",
+    "question": "Who was the top scorer in the 2024–25 Serie A?",
+    "pages": [
+      "2024–25 Serie A"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2024–25 Serie A",
+      "Cristiano Ronaldo",
+      "2024–25 Serie A",
+      "2025–26 Serie A",
+      "2025–26 Serie A"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r23",
+    "kind": "table",
+    "question": "Who was the top scorer in the 2023–24 Premier League?",
+    "pages": [
+      "2023–24 Premier League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2023–24 Premier League",
+      "2023–24 Premier League",
+      "Premier League",
+      "Cristiano Ronaldo",
+      "2024–25 Premier League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r24",
+    "kind": "table",
+    "question": "Who scored the most goals in the 2022–23 Bundesliga?",
+    "pages": [
+      "2022–23 Bundesliga"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2022–23 Bundesliga",
+      "2022–23 Bundesliga",
+      "2022–23 Bundesliga",
+      "2022–23 Bundesliga",
+      "2021–22 Bundesliga"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r25",
+    "kind": "table",
+    "question": "Which stadium does Arsenal play in during the 2022–23 Premier League?",
+    "pages": [
+      "2022–23 Premier League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2022–23 Premier League",
+      "2022–23 Premier League",
+      "2017–18 Premier League",
+      "2022–23 Premier League",
+      "2025–26 Premier League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r26",
+    "kind": "table",
+    "question": "Who captained Arsenal in the 2022–23 Premier League?",
+    "pages": [
+      "2022–23 Premier League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2022–23 Premier League",
+      "2025–26 Premier League",
+      "2022–23 Premier League",
+      "2023–24 Premier League",
+      "2023–24 Premier League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r27",
+    "kind": "table",
+    "question": "Who was the Premier League Player of the Season in 2024–25?",
+    "pages": [
+      "2024–25 Premier League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2024–25 Premier League",
+      "2024–25 Premier League",
+      "2023–24 Premier League",
+      "2025–26 Premier League",
+      "Bundesliga"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r28",
+    "kind": "near_twin",
+    "question": "Who won the 2021–22 La Liga?",
+    "pages": [
+      "2021–22 La Liga"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2021–22 La Liga",
+      "La Liga",
+      "Real Madrid CF",
+      "2021–22 La Liga",
+      "2022 Ballon d'Or"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r29",
+    "kind": "near_twin",
+    "question": "Who won the 2022–23 La Liga?",
+    "pages": [
+      "2022–23 La Liga"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2022–23 La Liga",
+      "La Liga",
+      "2022–23 La Liga",
+      "2009–10 La Liga",
+      "2022–23 UEFA Champions League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r30",
+    "kind": "near_twin",
+    "question": "Who won the 2024–25 La Liga?",
+    "pages": [
+      "2024–25 La Liga"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2024–25 La Liga",
+      "FC Barcelona",
+      "La Liga",
+      "2024–25 La Liga",
+      "2025–26 La Liga"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r31",
+    "kind": "ballon_dor",
+    "question": "Who won the Ballon d'Or in 2024?",
+    "pages": [
+      "2024 Ballon d'Or"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2024 Ballon d'Or",
+      "2024 Ballon d'Or",
+      "Ballon d'Or Féminin",
+      "2024 Ballon d'Or",
+      "Ballon d'Or"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r32",
+    "kind": "ballon_dor",
+    "question": "Who won the Ballon d'Or in 2023?",
+    "pages": [
+      "2023 Ballon d'Or"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "2023 Ballon d'Or",
+      "2023 Ballon d'Or",
+      "2023 Ballon d'Or",
+      "Ballon d'Or Féminin",
+      "2023 Ballon d'Or"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r33",
+    "kind": "ballon_dor",
+    "question": "Who has won the Ballon d'Or the most times?",
+    "pages": [
+      "Ballon d'Or"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Ballon d'Or",
+      "Ballon d'Or",
+      "Ballon d'Or",
+      "2017 Ballon d'Or",
+      "Ballon d'Or Féminin"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r34",
+    "kind": "ballon_dor",
+    "question": "Who won the first Ballon d'Or?",
+    "pages": [
+      "Ballon d'Or",
+      "1956 Ballon d'Or"
+    ],
+    "status": "scored",
+    "rank": 3,
+    "top_titles": [
+      "2009 Ballon d'Or",
+      "2002 Ballon d'Or",
+      "1956 Ballon d'Or",
+      "2012 FIFA Ballon d'Or",
+      "Ballon d'Or"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r35",
+    "kind": "ballon_dor",
+    "question": "Who won the Kopa Trophy?",
+    "pages": [
+      "Kopa Trophy"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Kopa Trophy",
+      "2019 Ballon d'Or",
+      "2023 Ballon d'Or",
+      "2022 Ballon d'Or",
+      "Kopa Trophy"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r36",
+    "kind": "ballon_dor",
+    "question": "Who won the Yashin Trophy?",
+    "pages": [
+      "Yashin Trophy"
+    ],
+    "status": "scored",
+    "rank": 3,
+    "top_titles": [
+      "2022 Ballon d'Or",
+      "2019 Ballon d'Or",
+      "Yashin Trophy",
+      "2023 Ballon d'Or",
+      "Yashin Trophy"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r37",
+    "kind": "ballon_dor",
+    "question": "Who won the Ballon d'Or Féminin in 2024?",
+    "pages": [
+      "Ballon d'Or Féminin",
+      "2024 Ballon d'Or Féminin"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Ballon d'Or Féminin",
+      "2024 Ballon d'Or",
+      "2024–25 UEFA Champions League",
+      "Ballon d'Or Féminin",
+      "2024–25 Bundesliga"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r38",
+    "kind": "ballon_dor",
+    "question": "What is the Gerd Müller Trophy awarded for?",
+    "pages": [
+      "Gerd Müller Trophy"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Gerd Müller Trophy",
+      "2022 Ballon d'Or",
+      "2025 Ballon d'Or",
+      "Ballon d'Or",
+      "Gerd Müller Trophy"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r39",
+    "kind": "isl",
+    "question": "When was the Indian Super League founded?",
+    "pages": [
+      "Indian Super League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Indian Super League",
+      "Indian Super League",
+      "Indian Super League",
+      "Indian Super League",
+      "Indian Super League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r40",
+    "kind": "isl",
+    "question": "Which team won the first Indian Super League season?",
+    "pages": [
+      "Indian Super League",
+      "2014 Indian Super League season"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Indian Super League",
+      "2019–20 Indian Super League",
+      "2018–19 Indian Super League",
+      "2014 Indian Super League",
+      "Indian Super League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r41",
+    "kind": "isl",
+    "question": "Which team won the 2023–24 Indian Super League?",
+    "pages": [
+      "2023–24 Indian Super League season"
+    ],
+    "status": "not_loaded"
+  },
+  {
+    "id": "r42",
+    "kind": "entity",
+    "question": "How many Ballon d'Or awards has Messi won?",
+    "pages": [
+      "Lionel Messi",
+      "Ballon d'Or"
+    ],
+    "status": "scored",
+    "rank": 3,
+    "top_titles": [
+      "2009 Ballon d'Or",
+      "2019 Ballon d'Or",
+      "Ballon d'Or",
+      "2022–23 Indian Super League",
+      "Lionel Messi"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r43",
+    "kind": "entity",
+    "question": "Which club did Cristiano Ronaldo join in 2018?",
+    "pages": [
+      "Cristiano Ronaldo"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Cristiano Ronaldo",
+      "Cristiano Ronaldo",
+      "2018–19 La Liga",
+      "Real Madrid CF",
+      "Ballon d'Or"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r44",
+    "kind": "entity",
+    "question": "What was the Hand of God goal?",
+    "pages": [
+      "Diego Maradona"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Diego Maradona",
+      "Diego Maradona",
+      "Diego Maradona",
+      "Diego Maradona",
+      "Diego Maradona"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r45",
+    "kind": "entity",
+    "question": "When was the Premier League founded?",
+    "pages": [
+      "Premier League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Premier League",
+      "Premier League",
+      "Premier League",
+      "Premier League",
+      "Premier League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r46",
+    "kind": "entity",
+    "question": "Which club has won the most La Liga titles?",
+    "pages": [
+      "La Liga"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "La Liga",
+      "Real Madrid CF",
+      "La Liga",
+      "FC Barcelona",
+      "La Liga"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r47",
+    "kind": "entity",
+    "question": "Which club has won the most Champions League titles?",
+    "pages": [
+      "UEFA Champions League"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "UEFA Champions League",
+      "UEFA Champions League",
+      "UEFA Champions League",
+      "Real Madrid CF",
+      "UEFA Champions League"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r48",
+    "kind": "concept",
+    "question": "How does offside work?",
+    "pages": [
+      "Offside (association football)"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Offside (association football)",
+      "Offside (association football)",
+      "Offside (association football)",
+      "Offside (association football)",
+      "Offside (association football)"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  },
+  {
+    "id": "r49",
+    "kind": "concept",
+    "question": "What is gegenpressing?",
+    "pages": [
+      "Gegenpressing"
+    ],
+    "status": "not_loaded"
+  },
+  {
+    "id": "r50",
+    "kind": "concept",
+    "question": "What is tiki-taka?",
+    "pages": [
+      "Tiki-taka"
+    ],
+    "status": "scored",
+    "rank": 1,
+    "top_titles": [
+      "Tiki-taka",
+      "Tiki-taka",
+      "Tiki-taka",
+      "Tiki-taka",
+      "Tiki-taka"
+    ],
+    "methods": [
+      "keyword",
+      "vector"
+    ]
+  }
+]

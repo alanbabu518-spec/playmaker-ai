@@ -58,6 +58,13 @@ html {
   -webkit-text-size-adjust: 100%; /* no font inflation in landscape */
 }
 
+/* The landing page uses a 15px root: the app's 14px was hard to read in Barlow, and 16px felt too big.
+   This one percentage scales every landing size at once, so it is the dial to turn (90% to 100%).
+   Chat screens keep the 14px root because the rule only matches while .landing-root is mounted. */
+html:has(.landing-root) {
+  font-size: 93.75%;
+}
+
 body {
   margin: 0;
   background: var(--color-chalk);
@@ -120,4 +127,211 @@ header a {
 .composer-field:focus-visible {
   outline: none;
   box-shadow: none;
+}
+
+/* Named text styles for the landing page. Each resolves to a Tailwind scale step, so no off scale sizes.
+   Heading 1 to 3 step down one size on mobile so long headlines fit a 390px screen. */
+@layer components {
+  .heading-1 {
+    @apply text-5xl font-semibold md:text-6xl;
+    text-wrap: balance;
+  }
+  .heading-2 {
+    @apply text-4xl font-semibold md:text-5xl;
+    text-wrap: balance;
+  }
+  .heading-3 {
+    @apply text-3xl font-semibold md:text-4xl;
+    text-wrap: balance;
+  }
+  .heading-5 {
+    @apply text-2xl font-semibold;
+    text-wrap: balance;
+  }
+  .heading-6 {
+    @apply text-xl font-semibold;
+    text-wrap: balance;
+  }
+
+  .title-1 {
+    @apply text-xl font-medium;
+    text-wrap: pretty;
+  }
+  .title-2 {
+    @apply text-lg font-medium;
+  }
+  .title-4 {
+    @apply text-base font-medium;
+  }
+
+  .body-1 {
+    @apply text-lg font-semibold;
+  }
+  .body-3 {
+    @apply text-lg;
+    text-wrap: pretty;
+  }
+  .body-4 {
+    @apply text-base font-semibold;
+  }
+  .body-5 {
+    @apply text-base font-medium;
+  }
+  .body-6 {
+    @apply text-base;
+  }
+
+  .button-sm {
+    @apply text-base font-semibold;
+  }
+  .button-md {
+    @apply text-lg font-semibold;
+  }
+  .button-lg {
+    @apply text-xl font-semibold;
+  }
+
+  .caption-1 {
+    @apply text-base font-medium;
+  }
+  .caption-2 {
+    @apply text-base;
+  }
+  .caption-3 {
+    @apply text-sm font-semibold;
+  }
+  .caption-4 {
+    @apply text-sm font-medium;
+  }
+}
+
+/* ---------- Landing hero entrance (added) ----------
+   The hero text settles into place, the answer card materializes (blur and scale together), and the
+   photo eases in from a slight zoom. Each piece reads its own delay from --d. */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes hero-materialize {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.94);
+    filter: blur(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes hero-photo {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-in {
+  animation: hero-in 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+.hero-card-in {
+  animation: hero-materialize 820ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+.hero-photo-in {
+  animation: hero-photo 1400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Reduced motion keeps the reveal as a plain fade, with no travel, blur or zoom. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-in,
+  .hero-card-in {
+    animation-name: hero-fade;
+    animation-duration: 300ms;
+  }
+  .hero-photo-in {
+    animation: none;
+  }
+}
+
+/* The frosted answer card turns solid for people who ask for less transparency. */
+@media (prefers-reduced-transparency: reduce) {
+  .hero-card-in .backdrop-blur-xl {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: rgb(11 58 41 / 0.94);
+  }
+}
+
+/* ---------- Glass and press styles used by LandingHero (added) ---------- */
+@layer components {
+  /* Glass material: a translucent layer with a bright top edge, like light catching the rim. */
+  .glass {
+    background: rgba(255, 255, 255, 0.14);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
+  }
+
+  /* Dark glass for the nav pill: readable over the photo and over the pale sections below. */
+  .glass-dark {
+    background: rgba(8, 40, 28, 0.42);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(22px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.26),
+      0 8px 30px rgba(6, 32, 22, 0.18);
+    transition: background-color 250ms ease-out;
+  }
+  .glass-dark[data-solid="true"] {
+    background: rgba(8, 40, 28, 0.86);
+  }
+
+  /* Press feedback lands on touch-down, not on release. */
+  .press {
+    transition:
+      transform 120ms ease-out,
+      background-color 150ms ease-out,
+      filter 150ms ease-out;
+  }
+  .press:active {
+    transform: scale(0.96);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .glass,
+    .glass-dark {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: rgba(8, 40, 28, 0.94);
+    }
+  }
+  @media (prefers-contrast: more) {
+    .glass,
+    .glass-dark {
+      background: rgba(8, 40, 28, 0.96);
+      border-color: rgba(255, 255, 255, 0.8);
+    }
+  }
 }
